@@ -3,6 +3,8 @@
 **A browser-based learning prototype built around active recall, graduated hints, and retrieval tracking.**
 
 **[Try Lexi →](https://leahlizrp.github.io/lexi/)**
+<img width="867" height="877" alt="download" src="https://github.com/user-attachments/assets/841ce012-fbc2-4adc-86d9-04ad700f3484" />
+*Try an acronym, learn its meaning, then practice recalling it with graduated hints.*
 
 Lexi started as a way to learn AI terminology more effectively and is evolving into an experiment in how AI can support long-term, adaptive learning.
 
