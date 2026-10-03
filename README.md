@@ -1,6 +1,6 @@
 # Lexi
 
-**An adaptive AI learning system built around active recall, graduated hints, mastery tracking, and reassessment.**
+**A browser-based learning prototype built around active recall, graduated hints, and retrieval tracking.**
 
 Lexi started as a way to learn AI terminology more effectively and is evolving into an experiment in how AI can support long-term, adaptive learning.
 
@@ -8,9 +8,9 @@ Lexi started as a way to learn AI terminology more effectively and is evolving i
 
 Lexi is a learning system designed to do more than tell you whether an answer is right or wrong.
 
-It tracks how knowledge is retrieved, distinguishes between unassisted and hint-assisted recall, provides progressively stronger hints when needed, and brings material back for reassessment over time.
+The current prototype helps learners try an acronym, learn what it means, and practice recalling its full meaning. It distinguishes between unassisted recall, hint-assisted recall, and revealed answers.
 
-The larger goal is to expand beyond terminology into AI concepts, frameworks, tools, and applied reasoning.
+The larger goal is to expand beyond terminology into AI concepts, frameworks, tools, and applied reasoning, with adaptive learning and reassessment over time.
 
 ## Why I'm Building It
 
@@ -22,27 +22,40 @@ Lexi grew from that problem: create a learning experience that adapts to what th
 
 ## How Learning Works
 
-Lexi's learning model is being designed around:
+The current prototype follows three steps:
 
-- Active recall rather than passive review
-- Graduated hints instead of immediately revealing answers
-- Unassisted vs. hint-assisted retrieval tracking
-- Reassessment after successful recall
-- Mastery progression rather than one-time correctness
-- Deeper concept exploration alongside memorization
-- Adaptive difficulty based on previous performance
+1. **Try:** Choose what an acronym stands for, or open its lesson for help.
+2. **Learn:** Read the meaning and memory tip, then make a correct multiple-choice selection before adding the acronym to drills. The first five starter lessons also include explanations and examples.
+3. **Drill:** Recall the full meaning from memory. Ask for up to two progressively stronger hints before revealing the answer.
+
+Completed drills are recorded as **Unassisted**, **Hinted**, or **Taught**. Lessons and multiple-choice attempts do not add to these counts. An acronym being ready for drills means it has been introduced and checked; it does not mean it has been mastered.
 
 ## Current Features
 
 The current prototype includes:
 
-- AI acronym and terminology practice
-- Correct / Partial / Incorrect assessment
-- Graduated hints
-- Unassisted recall tracking
-- Browser-saved learning history
-- Reassessment and mastery logic
-- Flexible learning sessions
+- 250 acronyms covering AI, machine learning, statistics, computing, and related technical topics
+- A try → learn → drill flow
+- Correct / Partial / Incorrect feedback during recall practice
+- Acceptance of small spelling slips
+- Two graduated hints before an answer can be revealed
+- Unassisted, hinted, and taught retrieval tracking
+- Browser-saved drill history and unlocked acronyms
+- Repeat practice through the unlocked collection
+
+## Getting Started
+
+Open `index.html` in a web browser. No installation or account is required.
+
+Progress is saved locally in the browser on that computer. Keep using the same file and browser to continue your practice. Progress does not sync across browsers or devices, and clearing browser data removes it.
+
+If browser storage is unavailable, Lexi shows a notice and keeps progress for the current session only.
+
+## Public Prototype Cleanup
+
+This version removes a personalized study-session reference from the Reinforcement Learning hint and standardizes word-count formatting in the first 16 hints. The visual design and learning behavior are unchanged.
+
+It also starts a fresh tracker using `lexi-history-v2` and `lexi-understood-v2`. Progress saved under the earlier v1 keys is left intact but is no longer loaded. New practice is saved under the v2 keys and continues across visits in the same browser.
 
 ## What I'm Experimenting With
 
@@ -55,16 +68,18 @@ Lexi is also a sandbox for exploring questions around human-centered AI and lear
 - How can an AI learning system explain why it is changing its behavior?
 - How can learner trust and control be preserved as the system becomes more adaptive?
 
+The current prototype uses a fixed acronym dataset and browser-based learning logic. It does not connect to an AI model or automatically adapt difficulty based on performance.
+
 ## Roadmap
 
 Future directions include:
 
 - Expanding beyond acronyms/terminology into broader AI concepts
 - Concept deep dives and applied questions
-- Improved spaced reassessment
+- Spaced reassessment after successful recall
 - Retrieval-speed tracking
-- Adaptive session generation
-- More sophisticated mastery modeling
+- Adaptive session generation and difficulty
+- Mastery progression and more sophisticated mastery modeling
 - Cross-topic learning
 - Improved learner progress visualization
 - Exploring multiple learning/assessment agents
@@ -75,4 +90,4 @@ Future directions include:
 
 Lexi currently works as a browser-based prototype and is being actively tested and expanded as I learn more about AI, HCI, adaptive learning, and conversational system design.
 
-This repository will document both the system and what I learn while building it.
+This repository will document both the system and what I learn while building it.cdfxxxx
