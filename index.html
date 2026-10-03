@@ -1,0 +1,2153 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Lexi · Try, learn, practice</title>
+<style>
+
+*{box-sizing:border-box}body{margin:0;background:#f5f4ee;color:#243b35;font:17px/1.6 system-ui,sans-serif}main{max-width:760px;margin:48px auto;padding:0 22px}header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}.logo{font-size:30px;font-weight:800}.tag{font-size:13px;color:#587066}article{background:white;border:1px solid #dce3db;border-radius:24px;padding:32px;box-shadow:0 12px 36px #243b3508}h1{font-size:52px;line-height:1.1;margin:8px 0 24px}h2{font-size:20px;margin-top:30px}.eyebrow{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#64776d}label{display:block;font-weight:600;margin-bottom:8px}input{width:100%;padding:14px;border:1px solid #96aba1;border-radius:10px;font:inherit}button{border:1px solid #b9c9bf;border-radius:10px;padding:11px 17px;background:#fff;color:#243b35;font:600 15px system-ui;cursor:pointer}button.primary{background:#22634e;color:white;border-color:#22634e}button:disabled{opacity:.45;cursor:default}button:focus-visible,input:focus-visible{outline:3px solid #d99835;outline-offset:3px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.message{margin-top:18px;padding:16px;background:#edf4ee;border-radius:10px}.message:empty{display:none}.small{font-size:13px;color:#62736c}.stats{display:flex;gap:12px;flex-wrap:wrap}.stat{background:#e7eee6;padding:12px 16px;border-radius:12px;flex:1;min-width:130px}.stat strong{font-size:24px;display:block}ul{padding-left:22px}footer{margin:24px 0} @media(max-width:500px){main{margin-top:20px}article{padding:24px}.tag{max-width:130px;text-align:right}}
+
+[hidden]{display:none!important}article{margin:20px 0}article>h2{margin:0 0 16px;font-size:25px}#choices{display:grid;gap:10px}#choices button{text-align:left;padding:15px;font-size:16px;font-weight:500}#choices button:hover{background:#edf4ee}#lessonMeaning{font-size:27px;margin:10px 0}#lessonTerm,#acronym{font-size:44px}.step{color:#22634e}.intro{max-width:580px}#lessonTip{margin-bottom:0}.stats{margin-top:15px}</style></head>
+<body><main>
+<header><span class="logo">Lexi<span style="color:#d99835">.</span></span><span class="tag">A little practice. A little more confidence.</span></header>
+<p class="intro">Try a new acronym, learn what it means, then practice remembering it. One at a time is plenty.</p>
+<p id="unlockCount" class="small" role="status"></p><div id="transferNotice" class="message" role="status" aria-live="polite"></div>
+<article aria-labelledby="tryHeading">
+<h2 id="tryHeading"><span class="step">1.</span> Try something new</h2>
+<div id="lessonPosition" class="eyebrow"></div><h1 id="lessonTerm"></h1>
+<div id="conceptCheck"><p id="conceptQuestion"></p><div id="choices" role="group" aria-label="Multiple choice answers"></div></div>
+<div id="topFeedback" class="message" role="status" aria-live="polite"></div>
+<p id="lessonState" class="small"></p>
+<div class="actions"><button type="button" id="readLesson">Teach me this one ↓</button></div>
+</article>
+<article aria-labelledby="learnHeading">
+<h2 id="learnHeading"><span class="step">2.</span> Learn what it means</h2>
+<p id="lessonEmpty" class="small">Choose an answer above, or tap “Teach me this one” to open the lesson.</p>
+<div id="lessonContent" hidden>
+<div id="middleTerm" class="eyebrow"></div><h3 id="lessonMeaning"></h3><p id="lessonExplanation"></p>
+<div id="exampleBox" class="message"><strong>An example</strong><p id="lessonExample"></p></div>
+<p><strong>Memory tip:</strong> <span id="lessonTip"></span></p>
+<div class="actions"><button id="retry" type="button" class="primary" hidden>Try the choices again ↑</button><button id="addToDrills" type="button" class="primary" hidden>I understand — add &amp; next acronym →</button><button id="nextLesson" type="button" hidden>Next acronym →</button></div>
+<div id="lessonFeedback" class="message" role="status" aria-live="polite"></div>
+</div></article>
+<article aria-labelledby="drillHeading">
+<h2 id="drillHeading"><span class="step">3.</span> Drill what you’ve learned</h2>
+<p id="drillStatus" class="small"></p><p id="drillEmpty">Your practice collection starts here. New acronyms join after a correct choice and a lesson.</p>
+<div id="drillDetails" hidden><div id="drillPosition" class="eyebrow"></div><p>What does this acronym stand for?</p><h1 id="acronym"></h1></div>
+<form id="quiz" hidden><label for="answer">Recall the full meaning</label><input id="answer" autocomplete="off" placeholder="Give it a try…" required><div class="actions"><button class="primary" id="check">Check answer</button><button type="button" id="hint">Get a hint</button><button type="button" id="reveal" disabled>Show answer</button></div></form>
+<div id="feedback" class="message" role="status" aria-live="polite"></div><div id="hintText" class="message" role="status" aria-live="polite"></div>
+<div class="actions"><button type="button" id="next" hidden>Next drill →</button></div>
+<p class="small">Two hints before revealing. Small spelling slips are accepted. Keep coming back to help the meanings stick.</p>
+</article>
+<h2>Your drill history</h2><div class="stats"><div class="stat"><strong id="unassisted">0</strong>Unassisted</div><div class="stat"><strong id="hinted">0</strong>Hinted</div><div class="stat"><strong id="taught">0</strong>Taught</div></div>
+<p class="small">These count completed drills, including previous practice. Lessons and multiple-choice attempts do not add to these counts. Ready for drills means introduced and checked, rather than mastered.</p><ul id="history"></ul>
+<footer id="storageNote" class="small">Saved in this browser on this computer. Keep using the same file and browser; clearing browser data removes history.</footer>
+</main><script>'use strict';
+const cards = [
+  {
+    "term": "AI",
+    "answer": "Artificial Intelligence",
+    "hints": [
+      "The broad field of making machines perform tasks associated with human thinking.",
+      "Two words: Artificial I…"
+    ]
+  },
+  {
+    "term": "ML",
+    "answer": "Machine Learning",
+    "hints": [
+      "An approach in which systems learn patterns from data instead of having every rule written by hand.",
+      "Two words: Machine L…"
+    ]
+  },
+  {
+    "term": "LLM",
+    "answer": "Large Language Model",
+    "hints": [
+      "A model trained on large amounts of text to work with and generate language.",
+      "Three words: Large L… M…"
+    ]
+  },
+  {
+    "term": "NLP",
+    "answer": "Natural Language Processing",
+    "hints": [
+      "The field concerned with computers working with human language.",
+      "Three words: Natural L… P…"
+    ]
+  },
+  {
+    "term": "RL",
+    "answer": "Reinforcement Learning",
+    "hints": [
+      "Learning to choose actions using reward signals — the topic from your recent University session.",
+      "Two words: Reinforcement L…"
+    ]
+  },
+  {
+    "term": "RLHF",
+    "answer": "Reinforcement Learning from Human Feedback",
+    "hints": [
+      "A training approach that uses feedback from people to help shape a reward signal.",
+      "Five words: Reinforcement L… from H… F…"
+    ]
+  },
+  {
+    "term": "DL",
+    "answer": "Deep Learning",
+    "hints": [
+      "A branch of machine learning that uses neural networks with many layers.",
+      "Two words: Deep L…"
+    ]
+  },
+  {
+    "term": "NN",
+    "answer": "Neural Network",
+    "hints": [
+      "A model made of connected units arranged in layers that learn patterns.",
+      "Two words: Neural N…"
+    ]
+  },
+  {
+    "term": "CV",
+    "answer": "Computer Vision",
+    "hints": [
+      "The AI field focused on interpreting images and video.",
+      "Two words: Computer V…"
+    ]
+  },
+  {
+    "term": "HCI",
+    "answer": "Human Computer Interaction",
+    "hints": [
+      "The field studying how people use technology and how to design that experience.",
+      "Three words: Human C… I…"
+    ]
+  },
+  {
+    "term": "API",
+    "answer": "Application Programming Interface",
+    "hints": [
+      "A defined way for software programs to communicate and use each other’s capabilities.",
+      "Three words: Application P… I…"
+    ]
+  },
+  {
+    "term": "GPU",
+    "answer": "Graphics Processing Unit",
+    "hints": [
+      "A chip originally designed for images, also widely used for the parallel calculations in AI.",
+      "Three words: Graphics P… U…"
+    ]
+  },
+  {
+    "term": "RAG",
+    "answer": "Retrieval Augmented Generation",
+    "hints": [
+      "An approach that fetches relevant information to help a model produce its response.",
+      "Three words: Retrieval A… G…"
+    ]
+  },
+  {
+    "term": "SFT",
+    "answer": "Supervised Fine Tuning",
+    "hints": [
+      "A training stage that adapts a model using examples of desired inputs and outputs.",
+      "Three words: Supervised F… T… (the last two are often hyphenated)."
+    ]
+  },
+  {
+    "term": "ASR",
+    "answer": "Automatic Speech Recognition",
+    "hints": [
+      "Technology that turns spoken audio into written text.",
+      "Three words: Automatic S… R…"
+    ]
+  },
+  {
+    "term": "TTS",
+    "answer": "Text to Speech",
+    "hints": [
+      "Technology that turns written words into spoken audio.",
+      "Three words: Text to S…"
+    ]
+  },
+  {
+    "term": "AGI",
+    "answer": "Artificial General Intelligence",
+    "hints": [
+      "A proposed kind of AI with broad abilities across many intellectual tasks.",
+      "3 words: Artificial G… I…"
+    ]
+  },
+  {
+    "term": "ANI",
+    "answer": "Artificial Narrow Intelligence",
+    "hints": [
+      "AI designed to handle a limited task or domain.",
+      "3 words: Artificial N… I…"
+    ]
+  },
+  {
+    "term": "ASI",
+    "answer": "Artificial Superintelligence",
+    "hints": [
+      "A hypothetical intelligence exceeding human abilities across most domains.",
+      "2 words: Artificial S…"
+    ]
+  },
+  {
+    "term": "XAI",
+    "answer": "Explainable Artificial Intelligence",
+    "hints": [
+      "Methods that help people understand why an AI system produced a result.",
+      "3 words: Explainable A… I…"
+    ]
+  },
+  {
+    "term": "ANN",
+    "answer": "Artificial Neural Network",
+    "hints": [
+      "A computing model built from connected trainable units.",
+      "3 words: Artificial N… N…"
+    ]
+  },
+  {
+    "term": "DNN",
+    "answer": "Deep Neural Network",
+    "hints": [
+      "A neural model containing multiple hidden layers.",
+      "3 words: Deep N… N…"
+    ]
+  },
+  {
+    "term": "CNN",
+    "answer": "Convolutional Neural Network",
+    "hints": [
+      "A neural architecture that applies learned filters, often to images.",
+      "3 words: Convolutional N… N…"
+    ]
+  },
+  {
+    "term": "RNN",
+    "answer": "Recurrent Neural Network",
+    "hints": [
+      "A neural architecture with connections that carry information across sequence steps.",
+      "3 words: Recurrent N… N…"
+    ]
+  },
+  {
+    "term": "LSTM",
+    "answer": "Long Short Term Memory",
+    "hints": [
+      "A recurrent architecture with gates designed to retain information over long sequences.",
+      "4 words: Long S… T… M…"
+    ]
+  },
+  {
+    "term": "GRU",
+    "answer": "Gated Recurrent Unit",
+    "hints": [
+      "A recurrent unit using reset and update gates.",
+      "3 words: Gated R… U…"
+    ]
+  },
+  {
+    "term": "GAN",
+    "answer": "Generative Adversarial Network",
+    "hints": [
+      "A generator and a discriminator learn by competing with one another.",
+      "3 words: Generative A… N…"
+    ]
+  },
+  {
+    "term": "VAE",
+    "answer": "Variational Autoencoder",
+    "hints": [
+      "A generative model that learns a probability distribution in a compressed space.",
+      "2 words: Variational A…"
+    ]
+  },
+  {
+    "term": "MLP",
+    "answer": "Multilayer Perceptron",
+    "hints": [
+      "A feedforward neural model with one or more hidden layers.",
+      "2 words: Multilayer P…"
+    ]
+  },
+  {
+    "term": "GNN",
+    "answer": "Graph Neural Network",
+    "hints": [
+      "A neural model that learns from nodes and their connections.",
+      "3 words: Graph N… N…"
+    ]
+  },
+  {
+    "term": "GCN",
+    "answer": "Graph Convolutional Network",
+    "hints": [
+      "A graph model that combines information from neighboring nodes.",
+      "3 words: Graph C… N…"
+    ]
+  },
+  {
+    "term": "GAT",
+    "answer": "Graph Attention Network",
+    "hints": [
+      "A graph model that learns how much weight to give neighboring nodes.",
+      "3 words: Graph A… N…"
+    ]
+  },
+  {
+    "term": "SNN",
+    "answer": "Spiking Neural Network",
+    "hints": [
+      "A neural model that communicates through discrete firing events.",
+      "3 words: Spiking N… N…"
+    ]
+  },
+  {
+    "term": "RBM",
+    "answer": "Restricted Boltzmann Machine",
+    "hints": [
+      "An energy-based model with visible and hidden layers and no within-layer connections.",
+      "3 words: Restricted B… M…"
+    ]
+  },
+  {
+    "term": "DBN",
+    "answer": "Deep Belief Network",
+    "hints": [
+      "A generative architecture built by stacking probabilistic layers.",
+      "3 words: Deep B… N…"
+    ]
+  },
+  {
+    "term": "SOM",
+    "answer": "Self Organizing Map",
+    "hints": [
+      "An unsupervised method that arranges similar inputs near each other on a grid.",
+      "3 words: Self O… M…"
+    ]
+  },
+  {
+    "term": "FFN",
+    "answer": "Feed Forward Network",
+    "hints": [
+      "A neural model in which information flows forward without recurrent loops.",
+      "3 words: Feed F… N…"
+    ]
+  },
+  {
+    "term": "GPT",
+    "answer": "Generative Pretrained Transformer",
+    "hints": [
+      "An autoregressive language-model family that predicts subsequent tokens.",
+      "3 words: Generative P… T…"
+    ]
+  },
+  {
+    "term": "BERT",
+    "answer": "Bidirectional Encoder Representations from Transformers",
+    "hints": [
+      "A language architecture that learns representations using context on both sides.",
+      "5 words: Bidirectional E… R… f… T…"
+    ]
+  },
+  {
+    "term": "ViT",
+    "answer": "Vision Transformer",
+    "hints": [
+      "An architecture that processes image patches with attention.",
+      "2 words: Vision T…"
+    ]
+  },
+  {
+    "term": "MoE",
+    "answer": "Mixture of Experts",
+    "hints": [
+      "An architecture that routes inputs among specialized model components.",
+      "3 words: Mixture o… E…"
+    ]
+  },
+  {
+    "term": "MHA",
+    "answer": "Multi Head Attention",
+    "hints": [
+      "An attention mechanism with several parallel attention computations.",
+      "3 words: Multi H… A…"
+    ]
+  },
+  {
+    "term": "GQA",
+    "answer": "Grouped Query Attention",
+    "hints": [
+      "An attention design in which groups of query heads share key and value heads.",
+      "3 words: Grouped Q… A…"
+    ]
+  },
+  {
+    "term": "MQA",
+    "answer": "Multi Query Attention",
+    "hints": [
+      "An attention design with shared key and value heads across query heads.",
+      "3 words: Multi Q… A…"
+    ]
+  },
+  {
+    "term": "RoPE",
+    "answer": "Rotary Position Embedding",
+    "hints": [
+      "A technique that encodes token positions by rotating query and key vectors.",
+      "3 words: Rotary P… E…"
+    ]
+  },
+  {
+    "term": "ReLU",
+    "answer": "Rectified Linear Unit",
+    "hints": [
+      "An activation that outputs zero for negative inputs and the input for positive ones.",
+      "3 words: Rectified L… U…"
+    ]
+  },
+  {
+    "term": "GELU",
+    "answer": "Gaussian Error Linear Unit",
+    "hints": [
+      "A smooth activation that weights inputs using a normal-distribution probability.",
+      "4 words: Gaussian E… L… U…"
+    ]
+  },
+  {
+    "term": "ELU",
+    "answer": "Exponential Linear Unit",
+    "hints": [
+      "An activation with an exponential branch for negative inputs.",
+      "3 words: Exponential L… U…"
+    ]
+  },
+  {
+    "term": "SELU",
+    "answer": "Scaled Exponential Linear Unit",
+    "hints": [
+      "An activation designed to support self-normalizing neural networks.",
+      "4 words: Scaled E… L… U…"
+    ]
+  },
+  {
+    "term": "GLU",
+    "answer": "Gated Linear Unit",
+    "hints": [
+      "A neural layer that multiplies one transformation by a learned gate.",
+      "3 words: Gated L… U…"
+    ]
+  },
+  {
+    "term": "SGD",
+    "answer": "Stochastic Gradient Descent",
+    "hints": [
+      "An optimizer that updates parameters using sampled training data.",
+      "3 words: Stochastic G… D…"
+    ]
+  },
+  {
+    "term": "BN",
+    "answer": "Batch Normalization",
+    "hints": [
+      "A technique that normalizes activations using statistics from a batch.",
+      "2 words: Batch N…"
+    ]
+  },
+  {
+    "term": "LN",
+    "answer": "Layer Normalization",
+    "hints": [
+      "A technique that normalizes activations within an individual example.",
+      "2 words: Layer N…"
+    ]
+  },
+  {
+    "term": "EMA",
+    "answer": "Exponential Moving Average",
+    "hints": [
+      "A smoothed estimate that gives progressively less weight to older values.",
+      "3 words: Exponential M… A…"
+    ]
+  },
+  {
+    "term": "BPTT",
+    "answer": "Backpropagation Through Time",
+    "hints": [
+      "A method for training recurrent models by unfolding their sequence computations.",
+      "3 words: Backpropagation T… T…"
+    ]
+  },
+  {
+    "term": "TBPTT",
+    "answer": "Truncated Backpropagation Through Time",
+    "hints": [
+      "A recurrent training method that limits how far gradients travel through sequence steps.",
+      "4 words: Truncated B… T… T…"
+    ]
+  },
+  {
+    "term": "LoRA",
+    "answer": "Low Rank Adaptation",
+    "hints": [
+      "A fine-tuning method that learns small factorized weight updates.",
+      "3 words: Low R… A…"
+    ]
+  },
+  {
+    "term": "PEFT",
+    "answer": "Parameter Efficient Fine Tuning",
+    "hints": [
+      "Adaptation methods that train only a small fraction of a model's parameters.",
+      "4 words: Parameter E… F… T…"
+    ]
+  },
+  {
+    "term": "QLoRA",
+    "answer": "Quantized Low Rank Adaptation",
+    "hints": [
+      "A fine-tuning method combining low-bit base weights with small trainable adapters.",
+      "4 words: Quantized L… R… A…"
+    ]
+  },
+  {
+    "term": "PTQ",
+    "answer": "Post Training Quantization",
+    "hints": [
+      "Reducing numerical precision after model training has finished.",
+      "3 words: Post T… Q…"
+    ]
+  },
+  {
+    "term": "QAT",
+    "answer": "Quantization Aware Training",
+    "hints": [
+      "Training that simulates low-precision arithmetic to reduce later accuracy loss.",
+      "3 words: Quantization A… T…"
+    ]
+  },
+  {
+    "term": "KD",
+    "answer": "Knowledge Distillation",
+    "hints": [
+      "Training a student model using guidance from a teacher model.",
+      "2 words: Knowledge D…"
+    ]
+  },
+  {
+    "term": "DPO",
+    "answer": "Direct Preference Optimization",
+    "hints": [
+      "A method that trains a policy directly on preferred and rejected responses.",
+      "3 words: Direct P… O…"
+    ]
+  },
+  {
+    "term": "PPO",
+    "answer": "Proximal Policy Optimization",
+    "hints": [
+      "A reinforcement-learning method that limits the size of policy updates.",
+      "3 words: Proximal P… O…"
+    ]
+  },
+  {
+    "term": "RLAIF",
+    "answer": "Reinforcement Learning from AI Feedback",
+    "hints": [
+      "Policy training guided by feedback generated by AI systems.",
+      "5 words: Reinforcement L… f… A… F…"
+    ]
+  },
+  {
+    "term": "RLVR",
+    "answer": "Reinforcement Learning with Verifiable Rewards",
+    "hints": [
+      "Policy training with rewards that can be checked using reliable rules or tests.",
+      "5 words: Reinforcement L… w… V… R…"
+    ]
+  },
+  {
+    "term": "MDP",
+    "answer": "Markov Decision Process",
+    "hints": [
+      "A mathematical framework describing states, actions, transitions, and rewards.",
+      "3 words: Markov D… P…"
+    ]
+  },
+  {
+    "term": "POMDP",
+    "answer": "Partially Observable Markov Decision Process",
+    "hints": [
+      "A decision framework in which the agent cannot directly observe the full state.",
+      "5 words: Partially O… M… D… P…"
+    ]
+  },
+  {
+    "term": "DQN",
+    "answer": "Deep Q Network",
+    "hints": [
+      "A reinforcement-learning model that uses a neural network to estimate action values.",
+      "3 words: Deep Q… N…"
+    ]
+  },
+  {
+    "term": "TD",
+    "answer": "Temporal Difference",
+    "hints": [
+      "A learning approach that updates predictions using other predictions at later steps.",
+      "2 words: Temporal D…"
+    ]
+  },
+  {
+    "term": "SARSA",
+    "answer": "State Action Reward State Action",
+    "hints": [
+      "An on-policy control method named for the five items used in its update.",
+      "5 words: State A… R… S… A…"
+    ]
+  },
+  {
+    "term": "A2C",
+    "answer": "Advantage Actor Critic",
+    "hints": [
+      "A reinforcement-learning approach combining a policy with an advantage estimate.",
+      "3 words: Advantage A… C…"
+    ]
+  },
+  {
+    "term": "A3C",
+    "answer": "Asynchronous Advantage Actor Critic",
+    "hints": [
+      "An actor-critic method with several workers learning asynchronously.",
+      "4 words: Asynchronous A… A… C…"
+    ]
+  },
+  {
+    "term": "SAC",
+    "answer": "Soft Actor Critic",
+    "hints": [
+      "An off-policy method that rewards both task performance and policy entropy.",
+      "3 words: Soft A… C…"
+    ]
+  },
+  {
+    "term": "DDPG",
+    "answer": "Deep Deterministic Policy Gradient",
+    "hints": [
+      "An actor-critic method for continuous actions using a deterministic policy.",
+      "4 words: Deep D… P… G…"
+    ]
+  },
+  {
+    "term": "TRPO",
+    "answer": "Trust Region Policy Optimization",
+    "hints": [
+      "A policy method that constrains how far each update moves from the old policy.",
+      "4 words: Trust R… P… O…"
+    ]
+  },
+  {
+    "term": "GAE",
+    "answer": "Generalized Advantage Estimation",
+    "hints": [
+      "A method that balances bias and variance when estimating policy advantages.",
+      "3 words: Generalized A… E…"
+    ]
+  },
+  {
+    "term": "MCTS",
+    "answer": "Monte Carlo Tree Search",
+    "hints": [
+      "A planning method that explores a decision tree using sampled rollouts.",
+      "4 words: Monte C… T… S…"
+    ]
+  },
+  {
+    "term": "IRL",
+    "answer": "Inverse Reinforcement Learning",
+    "hints": [
+      "Inferring a reward function from observed behavior.",
+      "3 words: Inverse R… L…"
+    ]
+  },
+  {
+    "term": "MARL",
+    "answer": "Multi Agent Reinforcement Learning",
+    "hints": [
+      "Learning in environments with several interacting decision makers.",
+      "4 words: Multi A… R… L…"
+    ]
+  },
+  {
+    "term": "BC",
+    "answer": "Behavioral Cloning",
+    "hints": [
+      "Learning a policy by supervised imitation of demonstrated actions.",
+      "2 words: Behavioral C…"
+    ]
+  },
+  {
+    "term": "SVM",
+    "answer": "Support Vector Machine",
+    "hints": [
+      "A classifier that seeks a boundary with a large margin.",
+      "3 words: Support V… M…"
+    ]
+  },
+  {
+    "term": "SVR",
+    "answer": "Support Vector Regression",
+    "hints": [
+      "A margin-based method for predicting numerical values.",
+      "3 words: Support V… R…"
+    ]
+  },
+  {
+    "term": "KNN",
+    "answer": "K Nearest Neighbors",
+    "hints": [
+      "A prediction method based on nearby training examples.",
+      "3 words: K N… N…"
+    ]
+  },
+  {
+    "term": "RF",
+    "answer": "Random Forest",
+    "hints": [
+      "An ensemble of randomized decision trees.",
+      "2 words: Random F…"
+    ]
+  },
+  {
+    "term": "DT",
+    "answer": "Decision Tree",
+    "hints": [
+      "A model that predicts by following a sequence of branching tests.",
+      "2 words: Decision T…"
+    ]
+  },
+  {
+    "term": "GBDT",
+    "answer": "Gradient Boosted Decision Trees",
+    "hints": [
+      "An ensemble that adds trees to correct the errors of earlier trees.",
+      "4 words: Gradient B… D… T…"
+    ]
+  },
+  {
+    "term": "GBM",
+    "answer": "Gradient Boosting Machine",
+    "hints": [
+      "An ensemble method that adds learners guided by loss gradients.",
+      "3 words: Gradient B… M…"
+    ]
+  },
+  {
+    "term": "GMM",
+    "answer": "Gaussian Mixture Model",
+    "hints": [
+      "A probability model combining multiple normal distributions.",
+      "3 words: Gaussian M… M…"
+    ]
+  },
+  {
+    "term": "HMM",
+    "answer": "Hidden Markov Model",
+    "hints": [
+      "A sequence model with unobserved states that produce observable outputs.",
+      "3 words: Hidden M… M…"
+    ]
+  },
+  {
+    "term": "CRF",
+    "answer": "Conditional Random Field",
+    "hints": [
+      "A model used to predict related labels jointly, often across a sequence.",
+      "3 words: Conditional R… F…"
+    ]
+  },
+  {
+    "term": "PCA",
+    "answer": "Principal Component Analysis",
+    "hints": [
+      "A linear method that finds directions capturing the most variation in data.",
+      "3 words: Principal C… A…"
+    ]
+  },
+  {
+    "term": "ICA",
+    "answer": "Independent Component Analysis",
+    "hints": [
+      "A method that separates signals into statistically independent components.",
+      "3 words: Independent C… A…"
+    ]
+  },
+  {
+    "term": "LDA",
+    "answer": "Linear Discriminant Analysis",
+    "hints": [
+      "In classification, a method that finds projections separating known classes.",
+      "3 words: Linear D… A…"
+    ]
+  },
+  {
+    "term": "SVD",
+    "answer": "Singular Value Decomposition",
+    "hints": [
+      "A matrix factorization used in compression and dimensionality reduction.",
+      "3 words: Singular V… D…"
+    ]
+  },
+  {
+    "term": "NMF",
+    "answer": "Nonnegative Matrix Factorization",
+    "hints": [
+      "A matrix decomposition with nonnegative factors.",
+      "3 words: Nonnegative M… F…"
+    ]
+  },
+  {
+    "term": "t-SNE",
+    "answer": "t Distributed Stochastic Neighbor Embedding",
+    "hints": [
+      "A nonlinear method often used to visualize high-dimensional data in two dimensions.",
+      "5 words: t D… S… N… E…"
+    ]
+  },
+  {
+    "term": "UMAP",
+    "answer": "Uniform Manifold Approximation and Projection",
+    "hints": [
+      "A dimensionality-reduction method that preserves aspects of neighborhood structure.",
+      "5 words: Uniform M… A… a… P…"
+    ]
+  },
+  {
+    "term": "DBSCAN",
+    "answer": "Density Based Spatial Clustering of Applications with Noise",
+    "hints": [
+      "A clustering method that finds dense groups and marks isolated points as noise.",
+      "8 words: Density B… S… C… o… A… w… N…"
+    ]
+  },
+  {
+    "term": "EM",
+    "answer": "Expectation Maximization",
+    "hints": [
+      "An iterative estimation method alternating latent-variable estimates and parameter updates.",
+      "2 words: Expectation M…"
+    ]
+  },
+  {
+    "term": "MLE",
+    "answer": "Maximum Likelihood Estimation",
+    "hints": [
+      "Choosing parameters that make observed data most probable.",
+      "3 words: Maximum L… E…"
+    ]
+  },
+  {
+    "term": "MAP",
+    "answer": "Maximum A Posteriori",
+    "hints": [
+      "Choosing the parameter estimate with the highest posterior probability.",
+      "3 words: Maximum A… P…"
+    ]
+  },
+  {
+    "term": "MCMC",
+    "answer": "Markov Chain Monte Carlo",
+    "hints": [
+      "Sampling from a distribution using a chain of dependent random states.",
+      "4 words: Markov C… M… C…"
+    ]
+  },
+  {
+    "term": "ELBO",
+    "answer": "Evidence Lower Bound",
+    "hints": [
+      "A quantity optimized in variational inference to approximate a difficult posterior.",
+      "3 words: Evidence L… B…"
+    ]
+  },
+  {
+    "term": "OOD",
+    "answer": "Out of Distribution",
+    "hints": [
+      "Describes inputs unlike the data a model was trained on.",
+      "3 words: Out o… D…"
+    ]
+  },
+  {
+    "term": "IID",
+    "answer": "Independent and Identically Distributed",
+    "hints": [
+      "A common assumption that samples are independent and come from the same distribution.",
+      "4 words: Independent a… I… D…"
+    ]
+  },
+  {
+    "term": "CDF",
+    "answer": "Cumulative Distribution Function",
+    "hints": [
+      "A function giving the probability of a value at or below a threshold.",
+      "3 words: Cumulative D… F…"
+    ]
+  },
+  {
+    "term": "PMF",
+    "answer": "Probability Mass Function",
+    "hints": [
+      "A function assigning probabilities to discrete outcomes.",
+      "3 words: Probability M… F…"
+    ]
+  },
+  {
+    "term": "CLT",
+    "answer": "Central Limit Theorem",
+    "hints": [
+      "A result explaining why many sample averages approach a normal distribution.",
+      "3 words: Central L… T…"
+    ]
+  },
+  {
+    "term": "LLN",
+    "answer": "Law of Large Numbers",
+    "hints": [
+      "A result saying sample averages approach their expected value as sample size grows.",
+      "4 words: Law o… L… N…"
+    ]
+  },
+  {
+    "term": "OLS",
+    "answer": "Ordinary Least Squares",
+    "hints": [
+      "A fitting method that minimizes the sum of squared residuals.",
+      "3 words: Ordinary L… S…"
+    ]
+  },
+  {
+    "term": "GLM",
+    "answer": "Generalized Linear Model",
+    "hints": [
+      "A modeling framework connecting a linear predictor to a response distribution through a link.",
+      "3 words: Generalized L… M…"
+    ]
+  },
+  {
+    "term": "ANOVA",
+    "answer": "Analysis of Variance",
+    "hints": [
+      "A statistical framework for comparing variation between and within groups.",
+      "3 words: Analysis o… V…"
+    ]
+  },
+  {
+    "term": "AIC",
+    "answer": "Akaike Information Criterion",
+    "hints": [
+      "A model-selection score balancing fit against model complexity.",
+      "3 words: Akaike I… C…"
+    ]
+  },
+  {
+    "term": "BIC",
+    "answer": "Bayesian Information Criterion",
+    "hints": [
+      "A model-selection score whose complexity penalty grows with sample size.",
+      "3 words: Bayesian I… C…"
+    ]
+  },
+  {
+    "term": "MSE",
+    "answer": "Mean Squared Error",
+    "hints": [
+      "A prediction metric averaging squared differences from the true values.",
+      "3 words: Mean S… E…"
+    ]
+  },
+  {
+    "term": "RMSE",
+    "answer": "Root Mean Squared Error",
+    "hints": [
+      "The square root of the average squared prediction error.",
+      "4 words: Root M… S… E…"
+    ]
+  },
+  {
+    "term": "MAE",
+    "answer": "Mean Absolute Error",
+    "hints": [
+      "A metric averaging the absolute sizes of prediction errors.",
+      "3 words: Mean A… E…"
+    ]
+  },
+  {
+    "term": "MAPE",
+    "answer": "Mean Absolute Percentage Error",
+    "hints": [
+      "A metric averaging absolute prediction errors relative to actual values.",
+      "4 words: Mean A… P… E…"
+    ]
+  },
+  {
+    "term": "RMSLE",
+    "answer": "Root Mean Squared Logarithmic Error",
+    "hints": [
+      "A metric applying squared-error comparison after a logarithmic transformation.",
+      "5 words: Root M… S… L… E…"
+    ]
+  },
+  {
+    "term": "ROC",
+    "answer": "Receiver Operating Characteristic",
+    "hints": [
+      "A curve comparing true-positive and false-positive rates across thresholds.",
+      "3 words: Receiver O… C…"
+    ]
+  },
+  {
+    "term": "AUC",
+    "answer": "Area Under the Curve",
+    "hints": [
+      "A summary measurement of the region beneath an evaluation curve.",
+      "4 words: Area U… t… C…"
+    ]
+  },
+  {
+    "term": "TPR",
+    "answer": "True Positive Rate",
+    "hints": [
+      "The fraction of actual positives correctly identified as positive.",
+      "3 words: True P… R…"
+    ]
+  },
+  {
+    "term": "FPR",
+    "answer": "False Positive Rate",
+    "hints": [
+      "The fraction of actual negatives incorrectly labeled positive.",
+      "3 words: False P… R…"
+    ]
+  },
+  {
+    "term": "TNR",
+    "answer": "True Negative Rate",
+    "hints": [
+      "The fraction of actual negatives correctly identified as negative.",
+      "3 words: True N… R…"
+    ]
+  },
+  {
+    "term": "FNR",
+    "answer": "False Negative Rate",
+    "hints": [
+      "The fraction of actual positives incorrectly labeled negative.",
+      "3 words: False N… R…"
+    ]
+  },
+  {
+    "term": "PPV",
+    "answer": "Positive Predictive Value",
+    "hints": [
+      "The fraction of positive predictions that are actually positive.",
+      "3 words: Positive P… V…"
+    ]
+  },
+  {
+    "term": "NPV",
+    "answer": "Negative Predictive Value",
+    "hints": [
+      "The fraction of negative predictions that are actually negative.",
+      "3 words: Negative P… V…"
+    ]
+  },
+  {
+    "term": "MCC",
+    "answer": "Matthews Correlation Coefficient",
+    "hints": [
+      "A classification metric using all four cells of a binary confusion matrix.",
+      "3 words: Matthews C… C…"
+    ]
+  },
+  {
+    "term": "NLL",
+    "answer": "Negative Log Likelihood",
+    "hints": [
+      "A loss that penalizes assigning low probability to observed outcomes.",
+      "3 words: Negative L… L…"
+    ]
+  },
+  {
+    "term": "ECE",
+    "answer": "Expected Calibration Error",
+    "hints": [
+      "A summary of gaps between predicted confidence and observed accuracy.",
+      "3 words: Expected C… E…"
+    ]
+  },
+  {
+    "term": "WER",
+    "answer": "Word Error Rate",
+    "hints": [
+      "A speech-transcription metric counting word insertions, deletions, and substitutions.",
+      "3 words: Word E… R…"
+    ]
+  },
+  {
+    "term": "CER",
+    "answer": "Character Error Rate",
+    "hints": [
+      "A text-recognition metric counting errors at the individual-symbol level.",
+      "3 words: Character E… R…"
+    ]
+  },
+  {
+    "term": "BLEU",
+    "answer": "Bilingual Evaluation Understudy",
+    "hints": [
+      "A text-generation metric based on overlap with reference translations.",
+      "3 words: Bilingual E… U…"
+    ]
+  },
+  {
+    "term": "ROUGE",
+    "answer": "Recall Oriented Understudy for Gisting Evaluation",
+    "hints": [
+      "A family of reference-overlap metrics often used for summarization.",
+      "6 words: Recall O… U… f… G… E…"
+    ]
+  },
+  {
+    "term": "METEOR",
+    "answer": "Metric for Evaluation of Translation with Explicit Ordering",
+    "hints": [
+      "A translation-evaluation metric that aligns words and accounts for ordering.",
+      "8 words: Metric f… E… o… T… w… E… O…"
+    ]
+  },
+  {
+    "term": "MRR",
+    "answer": "Mean Reciprocal Rank",
+    "hints": [
+      "An average based on the inverse position of the first relevant search result.",
+      "3 words: Mean R… R…"
+    ]
+  },
+  {
+    "term": "NDCG",
+    "answer": "Normalized Discounted Cumulative Gain",
+    "hints": [
+      "A ranking metric that rewards highly relevant results near the top.",
+      "4 words: Normalized D… C… G…"
+    ]
+  },
+  {
+    "term": "DCG",
+    "answer": "Discounted Cumulative Gain",
+    "hints": [
+      "A ranking score that reduces the contribution of lower-positioned results.",
+      "3 words: Discounted C… G…"
+    ]
+  },
+  {
+    "term": "IoU",
+    "answer": "Intersection over Union",
+    "hints": [
+      "A measure comparing the shared region of two shapes with their combined region.",
+      "3 words: Intersection o… U…"
+    ]
+  },
+  {
+    "term": "mAP",
+    "answer": "Mean Average Precision",
+    "hints": [
+      "An average of precision-based scores used in retrieval and object detection.",
+      "3 words: Mean A… P…"
+    ]
+  },
+  {
+    "term": "PSNR",
+    "answer": "Peak Signal to Noise Ratio",
+    "hints": [
+      "An image-quality metric comparing maximum signal power with error power.",
+      "5 words: Peak S… t… N… R…"
+    ]
+  },
+  {
+    "term": "SSIM",
+    "answer": "Structural Similarity Index Measure",
+    "hints": [
+      "An image-quality measure comparing structural information, contrast, and brightness.",
+      "4 words: Structural S… I… M…"
+    ]
+  },
+  {
+    "term": "FID",
+    "answer": "Frechet Inception Distance",
+    "hints": [
+      "A generative-image metric comparing feature distributions of real and generated images.",
+      "3 words: Frechet I… D…"
+    ]
+  },
+  {
+    "term": "NER",
+    "answer": "Named Entity Recognition",
+    "hints": [
+      "Finding names of people, places, organizations, and similar items in text.",
+      "3 words: Named E… R…"
+    ]
+  },
+  {
+    "term": "POS",
+    "answer": "Part of Speech",
+    "hints": [
+      "A grammatical category such as noun, verb, or adjective.",
+      "3 words: Part o… S…"
+    ]
+  },
+  {
+    "term": "NLU",
+    "answer": "Natural Language Understanding",
+    "hints": [
+      "Language processing focused on interpreting meaning and intent.",
+      "3 words: Natural L… U…"
+    ]
+  },
+  {
+    "term": "NLG",
+    "answer": "Natural Language Generation",
+    "hints": [
+      "Language processing focused on producing readable text.",
+      "3 words: Natural L… G…"
+    ]
+  },
+  {
+    "term": "MT",
+    "answer": "Machine Translation",
+    "hints": [
+      "Automatically converting text from one human language to another.",
+      "2 words: Machine T…"
+    ]
+  },
+  {
+    "term": "NMT",
+    "answer": "Neural Machine Translation",
+    "hints": [
+      "Translation performed with neural-network models.",
+      "3 words: Neural M… T…"
+    ]
+  },
+  {
+    "term": "OCR",
+    "answer": "Optical Character Recognition",
+    "hints": [
+      "Converting text in pictures or scanned pages into machine-readable characters.",
+      "3 words: Optical C… R…"
+    ]
+  },
+  {
+    "term": "VQA",
+    "answer": "Visual Question Answering",
+    "hints": [
+      "Answering questions about an image.",
+      "3 words: Visual Q… A…"
+    ]
+  },
+  {
+    "term": "IR",
+    "answer": "Information Retrieval",
+    "hints": [
+      "Finding relevant material in a collection in response to a query.",
+      "2 words: Information R…"
+    ]
+  },
+  {
+    "term": "IE",
+    "answer": "Information Extraction",
+    "hints": [
+      "Pulling structured facts from unstructured content.",
+      "2 words: Information E…"
+    ]
+  },
+  {
+    "term": "TF",
+    "answer": "Term Frequency",
+    "hints": [
+      "A count or weight describing how often a word appears in a document.",
+      "2 words: Term F…"
+    ]
+  },
+  {
+    "term": "IDF",
+    "answer": "Inverse Document Frequency",
+    "hints": [
+      "A weight that reduces the importance of words common across documents.",
+      "3 words: Inverse D… F…"
+    ]
+  },
+  {
+    "term": "TF-IDF",
+    "answer": "Term Frequency Inverse Document Frequency",
+    "hints": [
+      "A text weighting method combining within-document frequency and collection rarity.",
+      "5 words: Term F… I… D… F…"
+    ]
+  },
+  {
+    "term": "BOW",
+    "answer": "Bag of Words",
+    "hints": [
+      "A text representation that counts words while ignoring their order.",
+      "3 words: Bag o… W…"
+    ]
+  },
+  {
+    "term": "BPE",
+    "answer": "Byte Pair Encoding",
+    "hints": [
+      "A tokenization approach that repeatedly merges common adjacent symbol pairs.",
+      "3 words: Byte P… E…"
+    ]
+  },
+  {
+    "term": "OOV",
+    "answer": "Out of Vocabulary",
+    "hints": [
+      "Describes a word or token absent from a system's known set.",
+      "3 words: Out o… V…"
+    ]
+  },
+  {
+    "term": "BOS",
+    "answer": "Beginning of Sequence",
+    "hints": [
+      "A special marker indicating the start of an input or output sequence.",
+      "3 words: Beginning o… S…"
+    ]
+  },
+  {
+    "term": "EOS",
+    "answer": "End of Sequence",
+    "hints": [
+      "A special marker indicating that a sequence has finished.",
+      "3 words: End o… S…"
+    ]
+  },
+  {
+    "term": "MLM",
+    "answer": "Masked Language Modeling",
+    "hints": [
+      "Training a model to recover hidden tokens from surrounding context.",
+      "3 words: Masked L… M…"
+    ]
+  },
+  {
+    "term": "CLM",
+    "answer": "Causal Language Modeling",
+    "hints": [
+      "Training a model to predict a token using only preceding context.",
+      "3 words: Causal L… M…"
+    ]
+  },
+  {
+    "term": "NSP",
+    "answer": "Next Sentence Prediction",
+    "hints": [
+      "A training task that asks whether one sentence follows another.",
+      "3 words: Next S… P…"
+    ]
+  },
+  {
+    "term": "CoT",
+    "answer": "Chain of Thought",
+    "hints": [
+      "A prompting approach that elicits intermediate reasoning steps.",
+      "3 words: Chain o… T…"
+    ]
+  },
+  {
+    "term": "ICL",
+    "answer": "In Context Learning",
+    "hints": [
+      "Adapting behavior using examples in a prompt without updating model weights.",
+      "3 words: In C… L…"
+    ]
+  },
+  {
+    "term": "VLM",
+    "answer": "Vision Language Model",
+    "hints": [
+      "A model that works with both images and text.",
+      "3 words: Vision L… M…"
+    ]
+  },
+  {
+    "term": "LMM",
+    "answer": "Large Multimodal Model",
+    "hints": [
+      "A large model that handles more than one kind of input or output.",
+      "3 words: Large M… M…"
+    ]
+  },
+  {
+    "term": "SLM",
+    "answer": "Small Language Model",
+    "hints": [
+      "A compact language model with relatively modest resource requirements.",
+      "3 words: Small L… M…"
+    ]
+  },
+  {
+    "term": "PLM",
+    "answer": "Pretrained Language Model",
+    "hints": [
+      "A language model that has already learned from a broad training corpus.",
+      "3 words: Pretrained L… M…"
+    ]
+  },
+  {
+    "term": "KG",
+    "answer": "Knowledge Graph",
+    "hints": [
+      "A representation of entities and their relationships as connected nodes.",
+      "2 words: Knowledge G…"
+    ]
+  },
+  {
+    "term": "RDF",
+    "answer": "Resource Description Framework",
+    "hints": [
+      "A standard for describing data using subject-predicate-object triples.",
+      "3 words: Resource D… F…"
+    ]
+  },
+  {
+    "term": "OWL",
+    "answer": "Web Ontology Language",
+    "hints": [
+      "A semantic-web language for expressing classes and relationships.",
+      "3 words: Web O… L…"
+    ]
+  },
+  {
+    "term": "CPU",
+    "answer": "Central Processing Unit",
+    "hints": [
+      "The main general-purpose processor in a computer.",
+      "3 words: Central P… U…"
+    ]
+  },
+  {
+    "term": "TPU",
+    "answer": "Tensor Processing Unit",
+    "hints": [
+      "A specialized accelerator designed for machine-learning computations.",
+      "3 words: Tensor P… U…"
+    ]
+  },
+  {
+    "term": "NPU",
+    "answer": "Neural Processing Unit",
+    "hints": [
+      "A processor optimized for neural-network workloads.",
+      "3 words: Neural P… U…"
+    ]
+  },
+  {
+    "term": "RAM",
+    "answer": "Random Access Memory",
+    "hints": [
+      "A computer's working memory for data in active use.",
+      "3 words: Random A… M…"
+    ]
+  },
+  {
+    "term": "VRAM",
+    "answer": "Video Random Access Memory",
+    "hints": [
+      "Memory used by a graphics processor for its data and computations.",
+      "4 words: Video R… A… M…"
+    ]
+  },
+  {
+    "term": "SSD",
+    "answer": "Solid State Drive",
+    "hints": [
+      "Persistent storage that uses electronic memory without spinning disks.",
+      "3 words: Solid S… D…"
+    ]
+  },
+  {
+    "term": "HPC",
+    "answer": "High Performance Computing",
+    "hints": [
+      "Using powerful systems or clusters for demanding computations.",
+      "3 words: High P… C…"
+    ]
+  },
+  {
+    "term": "FLOPS",
+    "answer": "Floating Point Operations per Second",
+    "hints": [
+      "A measure of arithmetic throughput for numerical computing.",
+      "5 words: Floating P… O… p… S…"
+    ]
+  },
+  {
+    "term": "SIMD",
+    "answer": "Single Instruction Multiple Data",
+    "hints": [
+      "A processing technique applying one instruction to many data items.",
+      "4 words: Single I… M… D…"
+    ]
+  },
+  {
+    "term": "ASIC",
+    "answer": "Application Specific Integrated Circuit",
+    "hints": [
+      "A chip designed for a particular purpose.",
+      "4 words: Application S… I… C…"
+    ]
+  },
+  {
+    "term": "FPGA",
+    "answer": "Field Programmable Gate Array",
+    "hints": [
+      "A chip whose logic circuits can be configured after manufacturing.",
+      "4 words: Field P… G… A…"
+    ]
+  },
+  {
+    "term": "CUDA",
+    "answer": "Compute Unified Device Architecture",
+    "hints": [
+      "NVIDIA's parallel computing platform and programming model.",
+      "4 words: Compute U… D… A…"
+    ]
+  },
+  {
+    "term": "ONNX",
+    "answer": "Open Neural Network Exchange",
+    "hints": [
+      "An open format for exchanging machine-learning models.",
+      "4 words: Open N… N… E…"
+    ]
+  },
+  {
+    "term": "JIT",
+    "answer": "Just In Time",
+    "hints": [
+      "Compilation performed during program execution.",
+      "3 words: Just I… T…"
+    ]
+  },
+  {
+    "term": "AOT",
+    "answer": "Ahead Of Time",
+    "hints": [
+      "Compilation performed before program execution.",
+      "3 words: Ahead O… T…"
+    ]
+  },
+  {
+    "term": "SDK",
+    "answer": "Software Development Kit",
+    "hints": [
+      "A collection of tools and libraries for building software for a platform.",
+      "3 words: Software D… K…"
+    ]
+  },
+  {
+    "term": "IDE",
+    "answer": "Integrated Development Environment",
+    "hints": [
+      "An application combining tools such as an editor and debugger.",
+      "3 words: Integrated D… E…"
+    ]
+  },
+  {
+    "term": "CLI",
+    "answer": "Command Line Interface",
+    "hints": [
+      "A way to control software by typing commands.",
+      "3 words: Command L… I…"
+    ]
+  },
+  {
+    "term": "GUI",
+    "answer": "Graphical User Interface",
+    "hints": [
+      "A way to control software using visual elements such as windows and buttons.",
+      "3 words: Graphical U… I…"
+    ]
+  },
+  {
+    "term": "UI",
+    "answer": "User Interface",
+    "hints": [
+      "The controls and presentation through which someone uses a product.",
+      "2 words: User I…"
+    ]
+  },
+  {
+    "term": "UX",
+    "answer": "User Experience",
+    "hints": [
+      "How a person experiences using a product or service.",
+      "2 words: User E…"
+    ]
+  },
+  {
+    "term": "HTML",
+    "answer": "Hypertext Markup Language",
+    "hints": [
+      "The markup used to structure web pages.",
+      "3 words: Hypertext M… L…"
+    ]
+  },
+  {
+    "term": "CSS",
+    "answer": "Cascading Style Sheets",
+    "hints": [
+      "Rules that control the appearance and layout of web pages.",
+      "3 words: Cascading S… S…"
+    ]
+  },
+  {
+    "term": "DOM",
+    "answer": "Document Object Model",
+    "hints": [
+      "The browser's programmable tree representation of a page.",
+      "3 words: Document O… M…"
+    ]
+  },
+  {
+    "term": "JSON",
+    "answer": "JavaScript Object Notation",
+    "hints": [
+      "A lightweight text format for structured data with objects and arrays.",
+      "3 words: JavaScript O… N…"
+    ]
+  },
+  {
+    "term": "XML",
+    "answer": "Extensible Markup Language",
+    "hints": [
+      "A markup format using tags to structure data.",
+      "3 words: Extensible M… L…"
+    ]
+  },
+  {
+    "term": "CSV",
+    "answer": "Comma Separated Values",
+    "hints": [
+      "A plain-text table format with fields divided by commas.",
+      "3 words: Comma S… V…"
+    ]
+  },
+  {
+    "term": "TSV",
+    "answer": "Tab Separated Values",
+    "hints": [
+      "A plain-text table format with fields divided by tab characters.",
+      "3 words: Tab S… V…"
+    ]
+  },
+  {
+    "term": "SQL",
+    "answer": "Structured Query Language",
+    "hints": [
+      "A language for querying and modifying relational data.",
+      "3 words: Structured Q… L…"
+    ]
+  },
+  {
+    "term": "DBMS",
+    "answer": "Database Management System",
+    "hints": [
+      "Software for storing, organizing, and querying databases.",
+      "3 words: Database M… S…"
+    ]
+  },
+  {
+    "term": "RDBMS",
+    "answer": "Relational Database Management System",
+    "hints": [
+      "Database software that organizes data into related tables.",
+      "4 words: Relational D… M… S…"
+    ]
+  },
+  {
+    "term": "ETL",
+    "answer": "Extract Transform Load",
+    "hints": [
+      "A data workflow that changes source data before storing it in the destination.",
+      "3 words: Extract T… L…"
+    ]
+  },
+  {
+    "term": "ELT",
+    "answer": "Extract Load Transform",
+    "hints": [
+      "A data workflow that stores source data before changing it in the destination.",
+      "3 words: Extract L… T…"
+    ]
+  },
+  {
+    "term": "OLTP",
+    "answer": "Online Transaction Processing",
+    "hints": [
+      "Database workloads centered on many short operational transactions.",
+      "3 words: Online T… P…"
+    ]
+  },
+  {
+    "term": "OLAP",
+    "answer": "Online Analytical Processing",
+    "hints": [
+      "Data workloads designed for multidimensional analysis and reporting.",
+      "3 words: Online A… P…"
+    ]
+  },
+  {
+    "term": "ACID",
+    "answer": "Atomicity Consistency Isolation Durability",
+    "hints": [
+      "Four properties associated with reliable database transactions.",
+      "4 words: Atomicity C… I… D…"
+    ]
+  },
+  {
+    "term": "CRUD",
+    "answer": "Create Read Update Delete",
+    "hints": [
+      "The four basic operations for managing stored records.",
+      "4 words: Create R… U… D…"
+    ]
+  },
+  {
+    "term": "HTTP",
+    "answer": "Hypertext Transfer Protocol",
+    "hints": [
+      "The application protocol used for web requests and responses.",
+      "3 words: Hypertext T… P…"
+    ]
+  },
+  {
+    "term": "HTTPS",
+    "answer": "Hypertext Transfer Protocol Secure",
+    "hints": [
+      "Web communication protected by an encrypted transport connection.",
+      "4 words: Hypertext T… P… S…"
+    ]
+  },
+  {
+    "term": "URL",
+    "answer": "Uniform Resource Locator",
+    "hints": [
+      "An address that identifies where a resource can be accessed.",
+      "3 words: Uniform R… L…"
+    ]
+  },
+  {
+    "term": "URI",
+    "answer": "Uniform Resource Identifier",
+    "hints": [
+      "A string that identifies a resource by name, location, or both.",
+      "3 words: Uniform R… I…"
+    ]
+  },
+  {
+    "term": "DNS",
+    "answer": "Domain Name System",
+    "hints": [
+      "The system that translates domain names into network addresses.",
+      "3 words: Domain N… S…"
+    ]
+  },
+  {
+    "term": "IP",
+    "answer": "Internet Protocol",
+    "hints": [
+      "The network-layer protocol that addresses and routes packets.",
+      "2 words: Internet P…"
+    ]
+  },
+  {
+    "term": "TCP",
+    "answer": "Transmission Control Protocol",
+    "hints": [
+      "A transport protocol providing a reliable ordered byte stream.",
+      "3 words: Transmission C… P…"
+    ]
+  },
+  {
+    "term": "UDP",
+    "answer": "User Datagram Protocol",
+    "hints": [
+      "A transport protocol that sends datagrams without built-in delivery guarantees.",
+      "3 words: User D… P…"
+    ]
+  },
+  {
+    "term": "TLS",
+    "answer": "Transport Layer Security",
+    "hints": [
+      "A protocol that protects data sent over a network connection.",
+      "3 words: Transport L… S…"
+    ]
+  },
+  {
+    "term": "SSH",
+    "answer": "Secure Shell",
+    "hints": [
+      "A protocol used for encrypted remote login and command execution.",
+      "2 words: Secure S…"
+    ]
+  },
+  {
+    "term": "VPN",
+    "answer": "Virtual Private Network",
+    "hints": [
+      "An encrypted network tunnel often used for remote access.",
+      "3 words: Virtual P… N…"
+    ]
+  },
+  {
+    "term": "CDN",
+    "answer": "Content Delivery Network",
+    "hints": [
+      "Distributed servers that deliver content from locations near users.",
+      "3 words: Content D… N…"
+    ]
+  },
+  {
+    "term": "REST",
+    "answer": "Representational State Transfer",
+    "hints": [
+      "An architectural style commonly used for resource-oriented web services.",
+      "3 words: Representational S… T…"
+    ]
+  },
+  {
+    "term": "RPC",
+    "answer": "Remote Procedure Call",
+    "hints": [
+      "A mechanism for invoking a function in another process or computer.",
+      "3 words: Remote P… C…"
+    ]
+  },
+  {
+    "term": "JWT",
+    "answer": "JSON Web Token",
+    "hints": [
+      "A compact format for transmitting claims, often with a digital signature.",
+      "3 words: JSON W… T…"
+    ]
+  },
+  {
+    "term": "SSO",
+    "answer": "Single Sign On",
+    "hints": [
+      "An authentication arrangement allowing one login to access multiple services.",
+      "3 words: Single S… O…"
+    ]
+  },
+  {
+    "term": "MFA",
+    "answer": "Multi Factor Authentication",
+    "hints": [
+      "Login protection using more than one independent kind of evidence.",
+      "3 words: Multi F… A…"
+    ]
+  },
+  {
+    "term": "RBAC",
+    "answer": "Role Based Access Control",
+    "hints": [
+      "Permissions assigned through roles rather than separately to each person.",
+      "4 words: Role B… A… C…"
+    ]
+  },
+  {
+    "term": "IAM",
+    "answer": "Identity and Access Management",
+    "hints": [
+      "Systems and practices for managing users and their permissions.",
+      "4 words: Identity a… A… M…"
+    ]
+  },
+  {
+    "term": "PII",
+    "answer": "Personally Identifiable Information",
+    "hints": [
+      "Data that can identify a person directly or in combination with other data.",
+      "3 words: Personally I… I…"
+    ]
+  },
+  {
+    "term": "DLP",
+    "answer": "Data Loss Prevention",
+    "hints": [
+      "Controls designed to detect or prevent sensitive information from leaving approved boundaries.",
+      "3 words: Data L… P…"
+    ]
+  },
+  {
+    "term": "AES",
+    "answer": "Advanced Encryption Standard",
+    "hints": [
+      "A widely used symmetric block cipher standard.",
+      "3 words: Advanced E… S…"
+    ]
+  },
+  {
+    "term": "SaaS",
+    "answer": "Software as a Service",
+    "hints": [
+      "A cloud model in which users access a provider-managed application.",
+      "4 words: Software a… a… S…"
+    ]
+  },
+  {
+    "term": "PaaS",
+    "answer": "Platform as a Service",
+    "hints": [
+      "A cloud model offering a managed environment for running applications.",
+      "4 words: Platform a… a… S…"
+    ]
+  },
+  {
+    "term": "IaaS",
+    "answer": "Infrastructure as a Service",
+    "hints": [
+      "A cloud model providing resources such as virtual machines and networks.",
+      "4 words: Infrastructure a… a… S…"
+    ]
+  },
+  {
+    "term": "VM",
+    "answer": "Virtual Machine",
+    "hints": [
+      "A software-defined computer running on shared physical hardware.",
+      "2 words: Virtual M…"
+    ]
+  },
+  {
+    "term": "CI",
+    "answer": "Continuous Integration",
+    "hints": [
+      "Frequently combining code changes and automatically checking the combined result.",
+      "2 words: Continuous I…"
+    ]
+  },
+  {
+    "term": "CD",
+    "answer": "Continuous Delivery",
+    "hints": [
+      "In software delivery, keeping changes ready for release through an automated process.",
+      "2 words: Continuous D…"
+    ]
+  },
+  {
+    "term": "SRE",
+    "answer": "Site Reliability Engineering",
+    "hints": [
+      "Applying software engineering to service operations and reliability.",
+      "3 words: Site R… E…"
+    ]
+  },
+  {
+    "term": "SLA",
+    "answer": "Service Level Agreement",
+    "hints": [
+      "A formal commitment describing a service's expected performance.",
+      "3 words: Service L… A…"
+    ]
+  },
+  {
+    "term": "SLO",
+    "answer": "Service Level Objective",
+    "hints": [
+      "A target level of performance or reliability for a service.",
+      "3 words: Service L… O…"
+    ]
+  },
+  {
+    "term": "SLI",
+    "answer": "Service Level Indicator",
+    "hints": [
+      "A measurement used to evaluate service performance or reliability.",
+      "3 words: Service L… I…"
+    ]
+  },
+  {
+    "term": "TDD",
+    "answer": "Test Driven Development",
+    "hints": [
+      "A development practice that starts with a failing test before implementing behavior.",
+      "3 words: Test D… D…"
+    ]
+  },
+  {
+    "term": "BDD",
+    "answer": "Behavior Driven Development",
+    "hints": [
+      "A development approach expressing expected behavior through concrete examples.",
+      "3 words: Behavior D… D…"
+    ]
+  },
+  {
+    "term": "UAT",
+    "answer": "User Acceptance Testing",
+    "hints": [
+      "Checking that a system meets the needs of the people who will use it.",
+      "3 words: User A… T…"
+    ]
+  },
+  {
+    "term": "MVP",
+    "answer": "Minimum Viable Product",
+    "hints": [
+      "An early product with enough capability to test its core value with users.",
+      "3 words: Minimum V… P…"
+    ]
+  },
+  {
+    "term": "PoC",
+    "answer": "Proof of Concept",
+    "hints": [
+      "A small experiment showing whether an idea is technically feasible.",
+      "3 words: Proof o… C…"
+    ]
+  },
+  {
+    "term": "KPI",
+    "answer": "Key Performance Indicator",
+    "hints": [
+      "A chosen measurement used to track progress toward an objective.",
+      "3 words: Key P… I…"
+    ]
+  },
+  {
+    "term": "ROI",
+    "answer": "Return on Investment",
+    "hints": [
+      "A measure comparing the benefit of an investment with its cost.",
+      "3 words: Return o… I…"
+    ]
+  }
+];
+const $=id=>document.getElementById(id);
+const historyKey='lexi-history-v1',unlockKey='lexi-understood-v1';
+let records=[],unlocked=[];
+function storageWarning(){$('storageNote').textContent='Browser storage is unavailable. Progress will stay available for this session only.';}
+try{const value=JSON.parse(localStorage.getItem(historyKey)||'[]');if(Array.isArray(value))records=value.filter(r=>r&&typeof r.term==='string'&&['unassisted','hinted','taught'].includes(r.mode)&&typeof r.date==='string');}catch{storageWarning();}
+try{const value=JSON.parse(localStorage.getItem(unlockKey)||'[]');if(Array.isArray(value))unlocked=[...new Set(value.filter(term=>cards.some(c=>c.term===term)))];}catch{storageWarning();}
+function save(key,value){try{localStorage.setItem(key,JSON.stringify(value));}catch{storageWarning();}}
+const starters=['AI','ML','LLM','NLP','RAG'];
+const order=[...starters.map(term=>cards.findIndex(c=>c.term===term)),...cards.map((_,i)=>i).filter(i=>!starters.includes(cards[i].term))];
+let lessonIndex=order.find(i=>!unlocked.includes(cards[i].term))??order[0];
+let stage='read',conceptPassed=false,choices=[],correctChoice=-1;
+let drillIndex=-1,drillHints=0,drillComplete=false;
+const basics={
+ AI:{text:'AI is the broad idea of computers doing tasks such as recognizing patterns, working with language, or making predictions. It does not mean a computer thinks exactly like a person.',example:'A phone recognizing your spoken words is using AI.',tip:'Artificial = made by people; intelligence = the abilities being imitated.',question:'Which situation is an example of AI?',right:'A system recognizes spoken words and turns them into text.',wrong:['A person writes a shopping list on paper.','A shelf holds a collection of books.']},
+ ML:{text:'Machine learning is one way to build AI. People train a system on examples so it learns patterns, rather than writing a separate rule for every situation.',example:'A spam filter learns patterns from emails labeled spam or not spam.',tip:'The machine learns from examples. ML is part of AI.',question:'What makes a spam filter an example of machine learning?',right:'It learns useful patterns from emails labeled spam or not spam.',wrong:['It follows only a fixed list of rules written by hand, without learning from examples.','It stores emails without analyzing them.']},
+ LLM:{text:'A large language model learns patterns from huge amounts of text. It uses those patterns to predict and generate words. Its responses can still contain mistakes.',example:'A chatbot uses a language model to draft a reply to your question.',tip:'Large describes the scale; language is what it works with; model is the trained system.',question:'Which statement best describes an LLM?',right:'It generates language using learned patterns, and its answers can be wrong.',wrong:['It always retrieves a verified fact and can never be wrong.','It is a physical storage device for saving files.']},
+ NLP:{text:'Natural language processing is the field of helping computers work with everyday human language, written or spoken. Language models are one approach within this field.',example:'Sorting customer messages by topic is an NLP task.',tip:'Natural language means human language; processing means working with it.',question:'Which task belongs to natural language processing?',right:'Grouping written customer messages by what they are asking about.',wrong:['Replacing a broken keyboard cable.','Increasing the brightness of a screen.']},
+ RAG:{text:'Retrieval augmented generation means looking up relevant information and giving it to a model as context before it generates a response. This can help, but does not guarantee accuracy.',example:'A company assistant looks up its refund policy before answering a refund question.',tip:'Retrieve information, augment the context, generate the response.',question:'Which assistant is using RAG?',right:'It retrieves the refund policy and uses that text as context to write a reply.',wrong:['It answers only from patterns learned during training, without retrieving material.','It stores a policy file but never supplies it to the model.']}
+};
+const words=text=>text.toLowerCase().replace(/[^a-z0-9\s]/g,' ').trim().split(/\s+/).filter(Boolean);
+function closeWord(actual,target){
+ if(actual===target)return true;
+ if(target.length<5||Math.abs(actual.length-target.length)>1)return false;
+ if(actual.length===target.length){const d=[];for(let i=0;i<target.length;i++)if(actual[i]!==target[i])d.push(i);if(d.length===1)return true;const [a,b]=d;return d.length===2&&b===a+1&&actual[a]===target[b]&&actual[b]===target[a];}
+ const longer=actual.length>target.length?actual:target,shorter=actual.length>target.length?target:actual;let i=0;while(i<shorter.length&&longer[i]===shorter[i])i++;return longer.slice(i+1)===shorter.slice(i);
+}
+function judge(input,expected){const actual=words(input),target=words(expected);if(actual.length===target.length&&target.every((w,i)=>closeWord(actual[i],w)))return 'Correct';return target.some(w=>actual.some(c=>closeWord(c,w)))?'Partial':'Incorrect';}
+function updateCount(){$('unlockCount').textContent=`${unlocked.length} of 250 acronyms ready for drills`;}
+
+let lessonRead=false,attempts=0;
+function showLesson(){
+ stage='concept';conceptPassed=false;lessonRead=false;attempts=0;
+ const c=cards[lessonIndex],detail=basics[c.term];
+ $('lessonTerm').textContent=c.term;$('lessonPosition').textContent=`New acronym · ${order.indexOf(lessonIndex)+1} of 250`;
+ $('middleTerm').textContent=c.term;$('lessonMeaning').textContent=c.answer;$('lessonExplanation').textContent=detail?detail.text:c.hints[0];
+ $('exampleBox').hidden=!detail;$('lessonExample').textContent=detail?detail.example:'';
+ $('lessonTip').textContent=detail?detail.tip:`Say “${c.term} — ${c.answer}” aloud, then try remembering it without looking.`;
+ $('lessonContent').hidden=true;$('lessonEmpty').hidden=false;$('lessonFeedback').textContent='';$('topFeedback').textContent='';
+ $('readLesson').hidden=false;$('retry').hidden=true;$('addToDrills').hidden=true;$('nextLesson').hidden=true;
+ $('lessonState').textContent='Start with a guess, or open the lesson below.';
+ updateCount();beginCheck();
+}
+function beginCheck(){
+ stage='concept';conceptPassed=false;
+ $('conceptCheck').hidden=false;$('lessonContent').hidden=true;$('lessonEmpty').hidden=false;$('readLesson').hidden=false;
+ $('retry').hidden=true;$('addToDrills').hidden=true;$('lessonFeedback').textContent='';$('topFeedback').textContent='';
+ const c=cards[lessonIndex];$('conceptQuestion').textContent='What does '+c.term+' stand for?';
+ choices=[{text:c.answer,right:true},{text:cards[(lessonIndex+1)%cards.length].answer,right:false},{text:cards[(lessonIndex+2)%cards.length].answer,right:false}];
+ for(let i=choices.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[choices[i],choices[j]]=[choices[j],choices[i]];}
+ correctChoice=choices.findIndex(c=>c.right);$('choices').replaceChildren();
+ choices.forEach((choice,i)=>{const button=document.createElement('button');button.type='button';button.textContent=choice.text;button.addEventListener('click',()=>chooseMeaning(i));$('choices').append(button);});
+ $('lessonState').textContent=attempts?'Try again with the lesson covered.':'No pressure to know it yet. Give it a try.';
+}
+function readLesson(){
+ $('lessonContent').hidden=false;$('lessonEmpty').hidden=true;$('readLesson').hidden=true;
+ // Cover choices while the answer is visible so a retry requires closing the lesson.
+ $('conceptCheck').hidden=true;
+ $('retry').hidden=conceptPassed;$('addToDrills').hidden=!conceptPassed;
+ $('lessonState').textContent=conceptPassed?'Correct choice · read the lesson, then add it to your drills.':'Read the lesson below, then try the choices again.';
+ $('lessonFeedback').textContent=conceptPassed?'Take a moment to connect the letters with the meaning.':'A wrong guess is a starting point. Learn what it means, then try again.';
+ stage=conceptPassed?'ready':'learning';
+}
+function chooseMeaning(i){
+ if(stage!=='concept')return;attempts++;
+ conceptPassed=i===correctChoice;
+ $('topFeedback').textContent=conceptPassed?'Correct! Now learn what it means in the middle section.':'Not this one yet. The middle section will help you learn it.';
+ readLesson();
+}
+function addToDrills(){
+ if(stage!=='ready'||!conceptPassed)return;
+ const term=cards[lessonIndex].term;
+ if(!unlocked.includes(term)){unlocked.push(term);save(unlockKey,unlocked);}
+ lessonRead=true;stage='passed';$('addToDrills').hidden=true;$('nextLesson').hidden=true;
+ $('lessonState').textContent='Ready for drills';$('lessonFeedback').textContent=term+' is now in your drills below. Come back to the meaning whenever you need it.';
+ updateCount();if(drillIndex<0)startDrill();else {updateDrillStatus();$('drillPosition').textContent=`${drillIndex+1} of ${unlocked.length} unlocked`;}
+ nextLesson();$('transferNotice').textContent=term+' added to your drills. '+(unlocked.length<cards.length?'The next acronym is ready above.':'All 250 are now available for practice.');
+}
+function nextLesson(){
+ if(stage!=='passed')return;
+ const next=order.find(i=>!unlocked.includes(cards[i].term));
+ if(next===undefined){$('lessonFeedback').textContent='All 250 are ready for drills. Keep practicing below!';$('nextLesson').hidden=true;return;}
+ lessonIndex=next;showLesson();
+}
+function updateDrillStatus(){$('drillStatus').textContent=unlocked.length?`${unlocked.length} unlocked · practice only the acronyms you have passed`:'Your first acronym will appear here after you answer correctly and finish its lesson.';}
+function startDrill(){
+ updateDrillStatus();$('drillEmpty').hidden=unlocked.length>0;$('quiz').hidden=unlocked.length===0;$('drillDetails').hidden=unlocked.length===0;
+ if(!unlocked.length){drillIndex=-1;return;}
+ if(drillIndex<0||drillIndex>=unlocked.length)drillIndex=0;
+ drillHints=0;drillComplete=false;$('acronym').textContent=unlocked[drillIndex];$('drillPosition').textContent=`${drillIndex+1} of ${unlocked.length} unlocked`;
+ $('answer').value='';$('answer').disabled=false;$('check').disabled=false;$('hint').disabled=false;$('hint').textContent='Get a hint';$('reveal').disabled=true;$('next').hidden=true;$('feedback').textContent='';$('hintText').textContent='';
+}
+function drillCard(){return cards.find(c=>c.term===unlocked[drillIndex]);}
+function renderHistory(){
+ for(const mode of ['unassisted','hinted','taught'])$(mode).textContent=records.filter(r=>r.mode===mode).length;
+ $('history').replaceChildren();for(const r of records.slice(-5).reverse()){const li=document.createElement('li');li.textContent=`${r.term} · ${r.mode} · ${new Date(r.date).toLocaleDateString()}`;$('history').append(li);}
+}
+function finish(mode){if(drillComplete)return;drillComplete=true;records.push({term:drillCard().term,mode,date:new Date().toISOString()});save(historyKey,records);$('answer').disabled=true;$('check').disabled=true;$('hint').disabled=true;$('reveal').disabled=true;$('next').hidden=false;renderHistory();}
+$('quiz').addEventListener('submit',event=>{
+ event.preventDefault();if(drillIndex<0||drillComplete||!$('answer').value.trim())return;
+ const c=drillCard(),grade=judge($('answer').value,c.answer);
+ $('feedback').textContent=grade==='Correct'?`Correct! ${c.answer}.`:grade==='Partial'?'You have part of it. Try again, or ask for a hint.':'Keep going — try again, or ask for a hint.';
+ if(grade==='Correct')finish(drillHints?'hinted':'unassisted');
+});
+$('hint').addEventListener('click',()=>{if(drillIndex<0||drillComplete||drillHints>=2)return;drillHints++;$('hintText').textContent=`Hint ${drillHints} of 2: ${drillCard().hints[drillHints-1]}`;$('hint').textContent='Get another hint';if(drillHints===2){$('hint').disabled=true;$('reveal').disabled=false;}});
+$('reveal').addEventListener('click',()=>{if(drillIndex<0||drillComplete||drillHints<2)return;$('feedback').textContent=`${drillCard().term} stands for ${drillCard().answer}.`;finish('taught');});
+$('next').addEventListener('click',()=>{if(!unlocked.length)return;drillIndex=(drillIndex+1)%unlocked.length;startDrill();});
+$('readLesson').addEventListener('click',readLesson);$('retry').addEventListener('click',beginCheck);$('addToDrills').addEventListener('click',addToDrills);$('nextLesson').addEventListener('click',nextLesson);
+showLesson();startDrill();renderHistory();
+</script></body></html>
