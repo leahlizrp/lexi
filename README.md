@@ -90,4 +90,4 @@ Future directions include:
 
 Lexi currently works as a browser-based prototype and is being actively tested and expanded as I learn more about AI, HCI, adaptive learning, and conversational system design.
 
-This repository will document both the system and what I learn while building it.cdfxxxx
+This repository will document both the system and what I learn while building it.
