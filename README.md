@@ -2,6 +2,8 @@
 
 **A browser-based learning prototype built around active recall, graduated hints, and retrieval tracking.**
 
+**[Try Lexi →](https://leahlizrp.github.io/lexi/)**
+
 Lexi started as a way to learn AI terminology more effectively and is evolving into an experiment in how AI can support long-term, adaptive learning.
 
 ## What is Lexi?
